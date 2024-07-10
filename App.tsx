@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import RootStackNavigator from 'navigation/RootStackNavigator';
+import RootNavigator from 'navigation/RootNavigator';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation-stack';
 
 export default function App() {
   return (
-    <RootStackNavigator/>
+    <RootNavigator/>
   );
 }
