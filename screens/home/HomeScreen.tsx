@@ -24,14 +24,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const fetchProducts = async () => {
     setLoading(true);
-    const useCase = new GetProductsUseCaseImpl();
-    const response = await useCase.execute(offset, limit);
 
-    if (response.length == 0) {
-      setHasMore(false);
-    } else {
-      setProducts([...products, ...response]);
-      setHasMore(true);
+    if (hasMore) {
+      const useCase = new GetProductsUseCaseImpl();
+      const response = await useCase.execute(offset, limit);
+
+      console.log(`response : ${response}`);
+
+      if (response.length == 0) {
+        setHasMore(false);
+      } else {
+        setProducts([...products, ...response]);
+        setHasMore(true);
+      }
     }
 
     setLoading(false);
@@ -74,9 +79,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
-  safearea:{
-    flex: 1, backgroundColor: "#fff"
+  safearea: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
 
   toolbar: {
@@ -85,7 +90,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingStart: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
 
   title: {
