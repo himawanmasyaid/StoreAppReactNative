@@ -1,7 +1,15 @@
 import { Product } from "data/model/Product";
 import React, { useState, useEffect } from "react";
-import { FlatList, Text, View } from "react-native";
+import {
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { GetProductsUseCaseImpl } from "data/usecases/GetProductsUseCaseImpl";
+import ItemProduct from "components/ItemProduct";
 
 interface HomeScreenProps {
   navigation: any;
@@ -38,21 +46,53 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <FlatList
-        data={products}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Text>{item.price}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.5}
-      />
-    </View>
+    <SafeAreaView style={styles.safearea}>
+      <View>
+        <View style={styles.toolbar}>
+          <Text style={styles.title}>Store App</Text>
+        </View>
+        <FlatList
+          data={products}
+          renderItem={({ item }) => (
+            <ItemProduct
+              product={item}
+              onEditPress={() => console.log("Edit pressed")}
+              onDetailPress={() => console.log("Detail pressed")}
+              onDeletePress={() => console.log("Delete pressed")}
+            />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loading ? <ActivityIndicator size="large" color="#000" /> : null
+          }
+        />
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+
+  safearea:{
+    flex: 1, backgroundColor: "#fff"
+  },
+
+  toolbar: {
+    backgroundColor: "#fff", // blue color
+    paddingTop: 36,
+    paddingBottom: 16,
+    paddingStart: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
+  },
+});
 
 export default HomeScreen;
